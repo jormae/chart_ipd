@@ -25,26 +25,14 @@ const BranchForm = () => {
   const [branchName, setBranchName] = useState("");
   const [branchStatusId, setBranchStatusId] = useState("");
   const [orgId, setOrgId] = useState("");
-  const [orgName, setOrgName] = useState("");
-
-  //   const techCompanies = [
-  //     { label: "Apple", value: 1 },
-  //     { label: "Facebook", value: 2 },
-  //     { label: "Netflix", value: 3 },
-  //     { label: "Tesla", value: 4 },
-  //     { label: "Amazon", value: 5 },
-  //     { label: "Alphabet", value: 6 },
-  //   ];
-  //   const techCompanies = loadOrgOptions();
+  const [orgOption, setOrgOption] = useState([]);
 
   const loadOrgOptions = async () => {
     try {
       const respond = await services.getOrgs();
-      const orgs = respond.data;
-      //   console.log(respond);
-      console.log(respond);
-      //   optionOrgId(orgs[0]["orgId"]);
-      //   optionOrgName(orgs[0]["orgName"]);
+      //   console.log(respond["data"]);
+      const orgs = respond["data"];
+      setOrgOption(orgs);
     } catch (error) {
       alert("Failed to get org info");
     }
@@ -175,11 +163,11 @@ const BranchForm = () => {
                   label="Organization Name"
                   onChange={(e) => setOrgId(e.target.value)}
                 >
-                  {/* {loadOrgOptions.map((u, i) => (
-                    <MenuItem value={u.orgId} key={i}>
-                      {u.orgName}
+                  {orgOption.map((options) => (
+                    <MenuItem value={options.orgId} key={options.orgId}>
+                      {options.orgName}
                     </MenuItem>
-                  ))} */}
+                  ))}
                 </Select>
               </FormControl>
             </Grid>

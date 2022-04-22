@@ -1,22 +1,23 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Position from "./views/Position";
-import PositionForm from "./views/PositionForm";
-import Branch from "./views/Branch";
-import BranchForm from "./views/BranchForm";
-
+import MiniDrawer from "./components/Drawer";
+import Dashboard from "./views/Dashboard";
+import Register from "./views/Register";
+// import Position from "./views/Position";
+// import PositionForm from "./views/PositionForm";
+// import Branch from "./views/Branch";
+// import BranchForm from "./views/BranchForm";
 function App() {
   return (
     <div>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Position />} />
-        <Route path="position" element={<Position />} />
-        <Route path="position/:positionId" element={<PositionForm />} />
-        <Route path="branch" element={<Branch />} />
-        <Route path="branch/:branchId" element={<BranchForm />} />
-      </Routes>
+      <MiniDrawer>
+        {/* <Layout> */}
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+        {/* </Layout> */}
+      </MiniDrawer>
     </div>
   );
 }
