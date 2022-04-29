@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import services from "../services";
-import moment from "moment";
-import Swal from "sweetalert2";
+// import moment from "moment";
 import {
   CssBaseline,
   Grid,
   Paper,
-  TextField,
   Container,
   Typography,
   TableContainer,
@@ -24,8 +22,8 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
-import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
 import HotelIcon from "@mui/icons-material/Hotel";
+import BadgeIcon from "@mui/icons-material/Badge";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
@@ -51,57 +49,44 @@ const useStyles = makeStyles({
   },
 });
 
-const Register = (props) => {
+const Summary = (props) => {
   const classes = useStyles(props);
 
-  const [status, setStatus] = useState("success");
-  const [statusCode, setStatusCode] = useState();
-  const [message, setMessage] = useState("message");
-  const [errMsg, setErrMsg] = useState("");
-  let msg;
-
-  const [an, setAn] = useState("");
-  const staffName = "Admin";
-  moment.locale("th");
-  const today = moment().add(543, "year").format("L");
-  // console.log(today);
-
   const [charts, setCharts] = useState({ blogs: [] });
+  const [status, setStatus] = useState("success");
+  //   const [statusCode, setStatusCode] = useState();
+  const [message, setMessage] = useState("message");
+  //   const [doctorCode, setDoctorCode] = useState();
+  const staffName = "Maheedeen Jormae";
+  //   moment.locale("th");
+  //   const today = moment().add(543, "year").format("L");
+
   const fetchCharts = async () => {
     try {
-      const { data } = await services.getCharts();
-      // setCharts([...charts, { blogs: data }]);
+      const { data } = await services.getSummaries();
       setCharts({ blogs: data });
-
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const updateChartList = (value) => {
-  //   const blogs = [...charts.blogs, value];
-  //   setCharts({ blogs });
-  // };
-
   useEffect(() => {
     fetchCharts();
   }, [setCharts]);
 
-  const handleSubmit = async () => {
+  const submitSummaryChart = async (doctorCode) => {
+    console.log(doctorCode);
+
     try {
       const chart = {
-        an,
         staffName,
       };
 
-      // const respond = await services.addChart(chart);
-      // console.log(respond);
-      // console.log(respond.status);
       axios
-        .post(`http://localhost:3001/chart/upload/`, chart)
+        .put(`http://localhost:3001/chart/submit-summary/${doctorCode}`, chart)
         .then((response) => {
-          // console.log(response.data);
+          console.log(response.data);
           // return response;
           setOpen(true);
           setStatus("success");
@@ -110,23 +95,16 @@ const Register = (props) => {
         })
         .catch((error) => {
           // Error
+          //   console.log(error);
           if (error.response) {
             // Request made and server responded
-            // console.log(error.response);
+            console.log(error.response.data);
+            console.log(error.response.data.errors[0].msg);
             console.log(error.response.status);
-            // console.log(error.response.data.errors[0].msg);
-            // console.log(error.response.status);
-            if (error.response.status === 400) {
-              msg = error.response.data.errors[0].msg;
-            } else if (error.response.status === 404) {
-              msg = error.response.data.msg;
-              // msg = error.response.data.msg;
-            }
-            console.log(msg);
             setOpen(true);
             setStatus("error");
-            setStatusCode(error.response.status);
-            setMessage(msg);
+            // setStatusCode(error.response.status);
+            setMessage(error.response.data.errors[0].msg);
             // console.log(error.response.headers);
           } else if (error.request) {
             // The request was made but no response was received
@@ -138,27 +116,12 @@ const Register = (props) => {
           console.log(error.config);
           // return error;
         });
-      // if (respond["status"] === 400) {
-      //   setOpen(true);
-      //   setStatus("error");
-      //   setMessage(respond["errors"][0]["msg"]);
-      //   // console.log("ERROR : " + respond["data"]["errors"][0]["msg"]);
-      // } else {
-      //   setOpen(true);
-      //   setStatus("success");
-      //   setMessage(respond["message"]);
-      //   // console.log("SUCCESS : " + respond["data"]["message"]);
-      //   // updateChartList(chart);
-      //   fetchCharts();
-      // }
-      setAn("");
-      // console.log(status);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [state, setState] = useState({
+  const [state] = useState({
     open: false,
     vertical: "top",
     horizontal: "center",
@@ -180,7 +143,7 @@ const Register = (props) => {
       <CssBaseline>
         <Container maxWidth="xl" sx={{ p: 2 }}>
           <Typography variant="h4" sx={{ marginLeft: 2 }}>
-            รับชาร์ตจาก WARDS
+            ส่งสรุป Chart
           </Typography>
           <Grid container sx={{ p: 2 }}>
             <Grid item xs={12} sm={6} md={3}>
@@ -309,54 +272,47 @@ const Register = (props) => {
               </Alert>
             </Snackbar>
 
-            <Grid item xs={12} sm={6} sx={{ mb: 2 }}>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  console.log("submitted : " + an);
-                  handleSubmit();
-                }}
-              >
-                <TextField
-                  id="branchName"
-                  label="Barcode AN"
-                  variant="outlined"
-                  placeholder="กรุณาสแกนบาร์โค้ดที่นี"
-                  autoFocus={true}
-                  value={an}
-                  fullWidth
-                  required
-                  onChange={(e) => setAn(e.target.value)}
-                />
-              </form>
-            </Grid>
-
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">AN</TableCell>
-                    <TableCell align="center">HN</TableCell>
-                    <TableCell align="center">ชื่อ-สกุล</TableCell>
-                    <TableCell align="center">หอผู้ป่วย</TableCell>
-                    <TableCell align="center">วันที่ Discharge</TableCell>
                     <TableCell align="center">ชื่อแพทย์</TableCell>
+                    <TableCell align="center">จำนวนชาร์ต</TableCell>
+                    <TableCell align="center">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {charts.blogs.map((row) => (
                     <TableRow
-                      key={row.an}
+                      key={row.doctorCode}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                        {row.an}
+                        <BadgeIcon
+                          sx={{
+                            fontSize: 30,
+                            marginRight: 2,
+                            marginBottom: -1,
+                          }}
+                        />
+                        {row.dischargeDoctor}
                       </TableCell>
-                      <TableCell align="center">{row.hn}</TableCell>
-                      <TableCell align="left">{row.ptName}</TableCell>
-                      <TableCell align="left">{row.wardName}</TableCell>
-                      <TableCell align="center">{row.dischargeDate}</TableCell>
-                      <TableCell align="left">{row.dischargeDoctor}</TableCell>
+                      <TableCell align="center">{row.TOTAL_CHART}</TableCell>
+                      <TableCell align="center">
+                        <Button
+                          variant="contained"
+                          //   value={row.doctorCode}
+                          color="success"
+                          size="large"
+                          //   href={"/summary/" + row.doctorCode}
+                          //   onClick={submitSummaryChart}
+                          //   onClick={() => console.log(row.doctorCode)}
+                          //   onClick={() => setDoctorCode(row.doctorCode)}
+                          onClick={() => submitSummaryChart(row.doctorCode)}
+                        >
+                          ส่งสรุปชาร์ต
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -370,4 +326,4 @@ const Register = (props) => {
   //   }
 };
 
-export default Register;
+export default Summary;

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import MiniDrawer from "./components/Drawer";
 import Dashboard from "./views/Dashboard";
 import Register from "./views/Register";
-// import Position from "./views/Position";
+import Summary from "./views/Summary";
 // import PositionForm from "./views/PositionForm";
 // import Branch from "./views/Branch";
 // import BranchForm from "./views/BranchForm";
@@ -15,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/summary" element={<Summary />} />
         </Routes>
         {/* </Layout> */}
       </MiniDrawer>

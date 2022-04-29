@@ -3,6 +3,7 @@ import axios from "axios";
 const BASE_API_URL = "http://localhost:3001";
 export default {
   getCharts: () => axios.get(`${BASE_API_URL}/chart`),
+  getSummaries: () => axios.get(`${BASE_API_URL}/chart/summary`),
   addChart: (chart) =>
     axios
       .post(`${BASE_API_URL}/chart/upload/`, chart)
