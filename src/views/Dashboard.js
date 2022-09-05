@@ -15,6 +15,7 @@ import {
   CardActions,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   blueGrey: {
@@ -41,6 +42,29 @@ const useStyles = makeStyles({
 
 const Dashboard = (props) => {
   const classes = useStyles(props);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:3001/auth/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status != "success") {
+          localStorage.removeItem("token");
+          localStorage.removeItem("staffName");
+          window.location = "/login";
+          console.log(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
   return (
     <React.Fragment>
       <CssBaseline>
@@ -135,7 +159,7 @@ const Dashboard = (props) => {
                     variant="contained"
                     color="success"
                     size="large"
-                    href="/audit"
+                    href="/return-summary"
                   >
                     Go!
                   </Button>
@@ -153,7 +177,7 @@ const Dashboard = (props) => {
                         color="text.secondary"
                         gutterBottom
                       >
-                        4.รับ Chart จากหมอ Review
+                        4.ลงทะเบียน Reaudit Chart
                       </Typography>
                     </Grid>
                     <Grid item xs={4}>
@@ -166,7 +190,7 @@ const Dashboard = (props) => {
                     variant="contained"
                     color="success"
                     size="large"
-                    href="/return"
+                    href="/reaudit"
                   >
                     Go!
                   </Button>

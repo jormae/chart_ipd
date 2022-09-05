@@ -4,20 +4,23 @@ import MiniDrawer from "./components/Drawer";
 import Dashboard from "./views/Dashboard";
 import Register from "./views/Register";
 import Summary from "./views/Summary";
-// import PositionForm from "./views/PositionForm";
-// import Branch from "./views/Branch";
-// import BranchForm from "./views/BranchForm";
+import ReturnSummary from "./views/Return-Summary";
+import Reaudit from "./views/Reaudit";
+import Login from "./views/Login";
+
 function App() {
   return (
     <div>
       <MiniDrawer>
-        {/* <Layout> */}
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/summary" element={<Summary />} />
+          <Route path="/return-summary" element={<ReturnSummary />} />
+          <Route path="/reaudit" element={<Reaudit />} />
         </Routes>
-        {/* </Layout> */}
       </MiniDrawer>
     </div>
   );

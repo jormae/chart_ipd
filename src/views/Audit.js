@@ -51,7 +51,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Register = (props) => {
+const Audit = (props) => {
   const classes = useStyles(props);
 
   const [status, setStatus] = useState("success");
@@ -61,7 +61,7 @@ const Register = (props) => {
   let msg;
 
   const [an, setAn] = useState("");
-  const staffName = localStorage.getItem("staffName");
+  const staffName = "Admin";
   moment.locale("th");
   const today = moment().add(543, "year").format("L");
   // console.log(today);
@@ -70,6 +70,7 @@ const Register = (props) => {
   const fetchCharts = async () => {
     try {
       const { data } = await services.getCharts();
+      // setCharts([...charts, { blogs: data }]);
       setCharts({ blogs: data });
 
       console.log(data);
@@ -77,6 +78,11 @@ const Register = (props) => {
       console.log(error);
     }
   };
+
+  // const updateChartList = (value) => {
+  //   const blogs = [...charts.blogs, value];
+  //   setCharts({ blogs });
+  // };
 
   useEffect(() => {
     fetchCharts();
@@ -93,7 +99,7 @@ const Register = (props) => {
       // console.log(respond);
       // console.log(respond.status);
       axios
-        .post(`http://localhost:3001/chart/upload/`, chart)
+        .post(`http://192.168.2.22:3001/chart/upload/`, chart)
         .then((response) => {
           // console.log(response.data);
           // return response;
@@ -174,7 +180,7 @@ const Register = (props) => {
       <CssBaseline>
         <Container maxWidth="xl" sx={{ p: 2 }}>
           <Typography variant="h4" sx={{ marginLeft: 2 }}>
-            รับชาร์ตจาก WARDS
+            รับ Chart จากหมอ สรุป
           </Typography>
           <Grid container sx={{ p: 2 }}>
             <Grid item xs={12} sm={6} md={3}>
@@ -364,4 +370,4 @@ const Register = (props) => {
   //   }
 };
 
-export default Register;
+export default Audit;

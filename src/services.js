@@ -4,30 +4,57 @@ const BASE_API_URL = "http://localhost:3001";
 export default {
   getCharts: () => axios.get(`${BASE_API_URL}/chart`),
   getSummaries: () => axios.get(`${BASE_API_URL}/chart/summary`),
-  addChart: (chart) =>
-    axios
-      .post(`${BASE_API_URL}/chart/upload/`, chart)
-      .then((response) => {
-        // console.log(response);
-        return response;
-      })
-      .catch((error) => {
-        // Error
-        if (error.response) {
-          // Request made and server responded
-          console.log(error.response.data);
-          console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
-        }
-        console.log(error.config);
-        // return error;
-      }),
+  getReturnSummaryCharts: () =>
+    axios.get(`${BASE_API_URL}/chart/return-summary`),
+  getReaudits: () => axios.get(`${BASE_API_URL}/chart/reaudit`),
+  // addChart: (chart) =>
+  //   axios
+  //     .post(`${BASE_API_URL}/chart/upload/`, chart)
+  //     .then((response) => {
+  //       // console.log(response);
+  //       return response;
+  //     })
+  //     .catch((error) => {
+  //       // Error
+  //       if (error.response) {
+  //         // Request made and server responded
+  //         console.log(error.response.data);
+  //         console.log(error.response.status);
+  //         // console.log(error.response.headers);
+  //       } else if (error.request) {
+  //         // The request was made but no response was received
+  //         console.log(error.request);
+  //       } else {
+  //         // Something happened in setting up the request that triggered an Error
+  //         console.log("Error", error.message);
+  //       }
+  //       console.log(error.config);
+  //       // return error;
+  //     }),
+  // returnSummaryChart: (an) =>
+  //   axios
+  //     .put(`${BASE_API_URL}/chart/return-summary/an`, an)
+  //     .then((response) => {
+  //       // console.log(response);
+  //       return response;
+  //     })
+  //     .catch((error) => {
+  //       // Error
+  //       if (error.response) {
+  //         // Request made and server responded
+  //         console.log(error.response.data);
+  //         console.log(error.response.status);
+  //         // console.log(error.response.headers);
+  //       } else if (error.request) {
+  //         // The request was made but no response was received
+  //         console.log(error.request);
+  //       } else {
+  //         // Something happened in setting up the request that triggered an Error
+  //         console.log("Error", error.message);
+  //       }
+  //       console.log(error.config);
+  //       // return error;
+  //     }),
   // getPositions: () => axios.get(`${BASE_API_URL}/position`),
   // addPosition: (position) =>
   //   axios.post(`${BASE_API_URL}/position/`, position).catch(({ response }) => {

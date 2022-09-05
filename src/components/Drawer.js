@@ -135,7 +135,7 @@ export default function MiniDrawer({ children }) {
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItem button component={Link} to="/">
+          <ListItem button component={Link} to="/dashboard">
             <ListItemIcon>
               <Dashboard />
             </ListItemIcon>
@@ -147,11 +147,11 @@ export default function MiniDrawer({ children }) {
             </ListItemIcon>
             <ListItemText primary="branch" />
           </ListItem>
-          <ListItem button component={Link} to="/personnel">
+          <ListItem button component={Link} to="/signout">
             <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
-            <ListItemText primary="personnel" />
+            <ListItemText primary="sign out" />
           </ListItem>
         </List>
         <Divider />

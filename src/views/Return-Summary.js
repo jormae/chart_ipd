@@ -51,7 +51,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Register = (props) => {
+const ReturnSummary = (props) => {
   const classes = useStyles(props);
 
   const [status, setStatus] = useState("success");
@@ -63,13 +63,16 @@ const Register = (props) => {
   const [an, setAn] = useState("");
   const staffName = localStorage.getItem("staffName");
   moment.locale("th");
-  const today = moment().add(543, "year").format("L");
+  // const today = moment().add(543, "year").format("L");
+  // const today = moment().add(543, "year").format("L");
+  const today = moment().format();
   // console.log(today);
 
   const [charts, setCharts] = useState({ blogs: [] });
   const fetchCharts = async () => {
     try {
-      const { data } = await services.getCharts();
+      const { data } = await services.getReturnSummaryCharts();
+      console.log(data);
       setCharts({ blogs: data });
 
       console.log(data);
@@ -93,7 +96,7 @@ const Register = (props) => {
       // console.log(respond);
       // console.log(respond.status);
       axios
-        .post(`http://localhost:3001/chart/upload/`, chart)
+        .put(`http://localhost:3001/chart/return-summary/${an}/${today}`, chart)
         .then((response) => {
           // console.log(response.data);
           // return response;
@@ -174,7 +177,7 @@ const Register = (props) => {
       <CssBaseline>
         <Container maxWidth="xl" sx={{ p: 2 }}>
           <Typography variant="h4" sx={{ marginLeft: 2 }}>
-            รับชาร์ตจาก WARDS
+            รับ Chart จากหมอ สรุป
           </Typography>
           <Grid container sx={{ p: 2 }}>
             <Grid item xs={12} sm={6} md={3}>
@@ -333,8 +336,8 @@ const Register = (props) => {
                     <TableCell align="center">HN</TableCell>
                     <TableCell align="center">ชื่อ-สกุล</TableCell>
                     <TableCell align="center">หอผู้ป่วย</TableCell>
-                    <TableCell align="center">วันที่ Discharge</TableCell>
-                    <TableCell align="center">ชื่อแพทย์</TableCell>
+                    <TableCell align="center">วันที่รับสรุป Chart</TableCell>
+                    <TableCell align="center">ผู้บันทึก</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -349,8 +352,12 @@ const Register = (props) => {
                       <TableCell align="center">{row.hn}</TableCell>
                       <TableCell align="left">{row.ptName}</TableCell>
                       <TableCell align="left">{row.wardName}</TableCell>
-                      <TableCell align="center">{row.dischargeDate}</TableCell>
-                      <TableCell align="left">{row.dischargeDoctor}</TableCell>
+                      <TableCell align="center">
+                        {row.returnSummaryDate}
+                      </TableCell>
+                      <TableCell align="left">
+                        {row.returnedSummaryBy}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -364,4 +371,4 @@ const Register = (props) => {
   //   }
 };
 
-export default Register;
+export default ReturnSummary;

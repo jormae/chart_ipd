@@ -51,7 +51,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Register = (props) => {
+const Reaudit = (props) => {
   const classes = useStyles(props);
 
   const [status, setStatus] = useState("success");
@@ -69,7 +69,8 @@ const Register = (props) => {
   const [charts, setCharts] = useState({ blogs: [] });
   const fetchCharts = async () => {
     try {
-      const { data } = await services.getCharts();
+      const { data } = await services.getReaudits();
+      console.log(data);
       setCharts({ blogs: data });
 
       console.log(data);
@@ -93,7 +94,7 @@ const Register = (props) => {
       // console.log(respond);
       // console.log(respond.status);
       axios
-        .post(`http://localhost:3001/chart/upload/`, chart)
+        .put(`http://192.168.2.22:3001/chart/reaudit/${an}/`, chart)
         .then((response) => {
           // console.log(response.data);
           // return response;
@@ -174,7 +175,7 @@ const Register = (props) => {
       <CssBaseline>
         <Container maxWidth="xl" sx={{ p: 2 }}>
           <Typography variant="h4" sx={{ marginLeft: 2 }}>
-            รับชาร์ตจาก WARDS
+            บันทึกการ reaudit chart
           </Typography>
           <Grid container sx={{ p: 2 }}>
             <Grid item xs={12} sm={6} md={3}>
@@ -333,8 +334,8 @@ const Register = (props) => {
                     <TableCell align="center">HN</TableCell>
                     <TableCell align="center">ชื่อ-สกุล</TableCell>
                     <TableCell align="center">หอผู้ป่วย</TableCell>
-                    <TableCell align="center">วันที่ Discharge</TableCell>
-                    <TableCell align="center">ชื่อแพทย์</TableCell>
+                    <TableCell align="center">วันที่ reaudit</TableCell>
+                    <TableCell align="center">ผู้บันทึก</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -349,8 +350,8 @@ const Register = (props) => {
                       <TableCell align="center">{row.hn}</TableCell>
                       <TableCell align="left">{row.ptName}</TableCell>
                       <TableCell align="left">{row.wardName}</TableCell>
-                      <TableCell align="center">{row.dischargeDate}</TableCell>
-                      <TableCell align="left">{row.dischargeDoctor}</TableCell>
+                      <TableCell align="center">{row.reauditDate}</TableCell>
+                      <TableCell align="left">{row.collectedBy}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -364,4 +365,4 @@ const Register = (props) => {
   //   }
 };
 
-export default Register;
+export default Reaudit;

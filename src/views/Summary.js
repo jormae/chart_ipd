@@ -57,7 +57,9 @@ const Summary = (props) => {
   //   const [statusCode, setStatusCode] = useState();
   const [message, setMessage] = useState("message");
   //   const [doctorCode, setDoctorCode] = useState();
-  const staffName = "Maheedeen Jormae";
+  const staffName = localStorage.getItem("staffName");
+  // const [insertedAt, setInsertAt] = useState({ blogs: [] });
+
   //   moment.locale("th");
   //   const today = moment().add(543, "year").format("L");
 
@@ -65,7 +67,9 @@ const Summary = (props) => {
     try {
       const { data } = await services.getSummaries();
       setCharts({ blogs: data });
+
       console.log(data);
+      // console.log(data.doctorCode);
     } catch (error) {
       console.log(error);
     }
@@ -75,16 +79,21 @@ const Summary = (props) => {
     fetchCharts();
   }, [setCharts]);
 
-  const submitSummaryChart = async (doctorCode) => {
+  const submitSummaryChart = async (doctorCode, insertedAt) => {
     console.log(doctorCode);
+    console.log(insertedAt);
 
     try {
       const chart = {
         staffName,
+        insertedAt,
       };
 
       axios
-        .put(`http://localhost:3001/chart/submit-summary/${doctorCode}`, chart)
+        .put(
+          `http://localhost:3001/chart/submit-summary/${doctorCode}/${insertedAt}`,
+          chart
+        )
         .then((response) => {
           console.log(response.data);
           // return response;
@@ -308,7 +317,9 @@ const Summary = (props) => {
                           //   onClick={submitSummaryChart}
                           //   onClick={() => console.log(row.doctorCode)}
                           //   onClick={() => setDoctorCode(row.doctorCode)}
-                          onClick={() => submitSummaryChart(row.doctorCode)}
+                          onClick={() =>
+                            submitSummaryChart(row.doctorCode, row.insertedAt)
+                          }
                         >
                           ส่งสรุปชาร์ต
                         </Button>
